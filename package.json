@@ -1,0 +1,16 @@
+{
+  "name": "certificado-auditoria",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "MVP de auditoria local de sites associados por declaração ao uso de certificado digital.",
+  "engines": { "node": ">=22" },
+  "devDependencies": { "playwright": "1.62.1" },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "test:ui": "node scripts/ui-smoke.mjs",
+    "test:netlog": "node scripts/netlog-smoke.mjs",
+    "test:browser": "node scripts/browser-smoke.mjs",
+    "check": "node scripts/check.mjs"
+  }
+}

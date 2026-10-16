@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Auditoria de certificado</title><link rel="stylesheet" href="ui/styles.css">
+</head>
+<body class="popup">
+  <header class="brand"><div class="brand-icon" aria-hidden="true">C</div><div><strong>Certificado</strong><span>Auditoria local · MVP</span></div></header>
+  <main>
+    <div class="section-heading"><span class="eyebrow">SITE ATUAL</span><span id="status" class="badge">Carregando</span></div>
+    <h1 id="site">Carregando…</h1>
+    <p id="site-detail" class="muted"></p>
+    <div class="notice"><strong>O que este registro significa</strong><p>O Chrome não informa à extensão qual certificado foi usado. Você confirma o uso; a extensão acompanha visitas posteriores e sinais de cookies neste domínio.</p></div>
+    <form id="declare-form">
+      <label for="alias">Apelido do certificado</label>
+      <input id="alias" name="alias" maxlength="64" value="Certificado corporativo" required autocomplete="off" aria-describedby="alias-hint">
+      <small id="alias-hint">Use um apelido, sem CPF, senha ou dados do titular.</small>
+      <label class="check"><input id="confirmed" type="checkbox" required><span>Confirmo que usei este certificado para me autenticar neste site.</span></label>
+      <button id="declare" type="submit" class="primary" disabled>Confirmar uso e acompanhar site</button>
+    </form>
+    <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
+    <button id="end-context" class="secondary" hidden>Encerrar contexto declarado</button>
+    <button id="open-dashboard" class="link-button">Abrir histórico e configurações <span aria-hidden="true">↗</span></button>
+    <p class="footnote">Nenhum valor de cookie ou conteúdo de página é salvo. Nenhum dado é enviado a servidores.</p>
+  </main>
+  <script type="module" src="ui/popup.js"></script>
+</body>
+</html>

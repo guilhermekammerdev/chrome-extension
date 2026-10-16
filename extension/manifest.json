@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Certificado · Auditoria local",
+  "version": "0.1.0",
+  "description": "Acompanha sites declarados pelo usuário como acessados com certificado e observa sinais de continuidade de sessão.",
+  "minimum_chrome_version": "120",
+  "permissions": ["storage", "webNavigation", "cookies", "activeTab", "alarms"],
+  "optional_host_permissions": ["https://*/*", "http://localhost/*", "http://127.0.0.1/*"],
+  "background": { "service_worker": "background.js", "type": "module" },
+  "action": { "default_popup": "popup.html", "default_title": "Auditoria de certificado" },
+  "options_page": "options.html",
+  "incognito": "not_allowed",
+  "content_security_policy": { "extension_pages": "script-src 'self'; object-src 'none'; base-uri 'none'" }
+}

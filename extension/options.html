@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Histórico · Auditoria de certificado</title><link rel="stylesheet" href="ui/styles.css">
+</head>
+<body>
+  <div class="layout">
+    <header class="page-header"><div class="brand"><div class="brand-icon" aria-hidden="true">C</div><div><strong>Certificado</strong><span>Auditoria local · MVP</span></div></div><span id="collection-status" class="badge">Carregando</span></header>
+    <main>
+      <div class="hero"><div><span class="eyebrow">VISIBILIDADE SOBRE AS SESSÕES</span><h1>Histórico de acompanhamento</h1><p class="muted">Sites que você associou ao uso de um certificado, com observações posteriores do navegador.</p></div><button id="refresh" class="secondary">Atualizar</button></div>
+      <div class="notice"><strong>Declaração e evidência técnica são coisas diferentes.</strong><p>Este MVP não detecta automaticamente o uso do certificado nem comprova autenticação ou reutilização de sessão. Cookies presentes podem ser de preferências, análise de acesso ou login. Para comprovar a origem da autenticação, será necessário integrar um agente ou logs da infraestrutura da empresa.</p></div>
+      <section class="metrics" aria-label="Resumo do histórico"><div class="metric"><span>Domínios configurados</span><strong id="domain-count">0</strong></div><div class="metric"><span>Registros retidos</span><strong id="event-count">0</strong></div><div class="metric"><span>Usos declarados</span><strong id="declaration-count">0</strong></div></section>
+      <section class="panel">
+        <div class="panel-heading"><div><h2>Atividade recente</h2><p class="muted">Até 200 registros na tela. A exportação inclui todos os registros retidos.</p></div><button id="export" class="secondary">Exportar JSON</button></div>
+        <div class="filters"><label>Domínio<input id="filter-domain" type="search" placeholder="Filtrar por domínio" autocomplete="off"></label><label>Tipo de registro<select id="filter-type"><option value="">Todos os tipos</option><option value="certificate_declared">Uso declarado</option><option value="navigation">Visita observada</option><option value="cookie_changed">Alteração de cookie</option><option value="context_ended">Contexto encerrado</option></select></label></div>
+        <div class="table-scroll"><table><thead><tr><th>Quando</th><th>Site</th><th>Registro</th><th>Evidência / contexto</th></tr></thead><tbody id="events"></tbody></table></div>
+        <div id="empty" class="empty" hidden><strong>Nenhum registro por aqui</strong><p>Após usar o certificado em um site, clique no ícone da extensão e confirme o uso. O domínio será incluído no acompanhamento após sua autorização.</p></div>
+      </section>
+      <section class="panel" id="netlog-panel"><h2>Windows com A1 · Diagnóstico técnico</h2><p class="muted">Analise um arquivo NetLog gerado pelo Chrome no modo padrão. O diagnóstico distingue solicitação de certificado, disponibilização à conexão e conclusão do TLS. Ele não identifica qual A1 foi usado, não comprova login no portal e não confirma reuso de cookies.</p>
+        <p class="muted">O arquivo bruto pode conter URLs e dados de navegação. A análise ocorre apenas nesta página; o arquivo não é enviado nem salvo no histórico. Não selecione arquivos PFX/P12 ou chaves privadas. As instruções de captura para Windows estão no projeto.</p>
+        <form id="netlog-form"><label for="netlog-file">Arquivo NetLog (.json, até 20 MB)</label><input id="netlog-file" type="file" accept=".json,application/json" required><div class="diagnostic-actions"><button id="netlog-analyze" type="submit" class="secondary">Analisar arquivo local</button><button id="netlog-export" type="button" class="secondary" disabled>Exportar resumo sem dados brutos</button></div></form>
+        <p id="netlog-feedback" class="feedback" role="status" aria-live="polite"></p>
+        <div class="table-scroll" id="netlog-results" hidden><table><thead><tr><th>Horário aproximado</th><th>Nome TLS (SNI)</th><th>Evento observado</th><th>Identidade / sessão</th></tr></thead><tbody id="netlog-connections"></tbody></table></div>
+      </section>
+      <section class="panel"><h2>Configurações de coleta</h2><p class="muted">Qualquer domínio HTTPS pode ser incluído. As permissões são solicitadas apenas para os domínios escolhidos e seus subdomínios.</p>
+        <form id="settings-form">
+          <label class="check"><input id="enabled" type="checkbox"><span>Monitoramento ativo</span></label>
+          <label for="domains">Domínios acompanhados</label><textarea id="domains" rows="5" placeholder="exemplo.gov.br&#10;portal.empresa.com.br" spellcheck="false"></textarea><small>Um domínio por linha, sem https:// ou caminhos. Domínios adicionais permitem observar visitas, mas não são uma declaração de uso do certificado.</small>
+          <div class="form-grid"><label>Retenção do histórico (dias)<input id="retention-days" type="number" min="1" max="30" required></label><label>Validade máxima do contexto (horas)<input id="context-hours" type="number" min="1" max="24" required></label></div>
+          <p class="muted">Alterações nos cookies, no início do Chrome, nas permissões ou nestas configurações encerram os contextos declarados. Um contexto sempre vale apenas para o domínio e o perfil em que foi registrado. Remover um domínio interrompe sua coleta; para revogar a permissão de acesso, use as configurações da extensão no Chrome.</p>
+          <button id="save" class="primary" type="submit">Salvar e autorizar domínios</button>
+        </form>
+      </section>
+      <section class="panel compact"><h2>Dados locais</h2><p class="muted">São guardados apenas domínio, origem, horário, tipo de evento, apelido informado e metadados mínimos. Caminhos, parâmetros de URL, valores de cookies e conteúdo de páginas não são armazenados. Limite: 2.000 registros, por até 30 dias. O histórico local pode ser alterado ou apagado; ele não substitui uma trilha de auditoria central da empresa.</p><button id="clear" class="danger">Apagar histórico e contextos</button></section>
+      <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
+    </main>
+    <footer>MVP 0.1 · Coleta local e visível · Não atua em janelas anônimas</footer>
+  </div>
+  <script type="module" src="ui/options.js"></script>
+</body>
+</html>
